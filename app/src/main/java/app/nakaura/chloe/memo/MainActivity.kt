@@ -2,7 +2,9 @@ package app.nakaura.chloe.memo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.RecyclerView
 import app.nakaura.chloe.memo.databinding.ActivityMainBinding
+import app.nakaura.chloe.memo.databinding.ItemDataCellBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -12,5 +14,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater).apply { setContentView(this.root) }
 
+        val memoListFragment = MemoListFragment()
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.fragmentContainer, memoListFragment)
+        fragmentTransaction.commit()
     }
 }
+
+class MemoListViewHolder(binding: ItemDataCellBinding): RecyclerView.ViewHolder(binding.root)
