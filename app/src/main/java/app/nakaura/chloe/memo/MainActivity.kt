@@ -20,5 +20,3 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 }
-
-class MemoListViewHolder(binding: ItemDataCellBinding): RecyclerView.ViewHolder(binding.root)
