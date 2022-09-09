@@ -15,8 +15,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater).apply { setContentView(this.root) }
 
         val memoListFragment = MemoListFragment()
+        // 1. call the start of edition
         val fragmentTransaction = supportFragmentManager.beginTransaction()
+        // 2. Link the Fragment manager class and place with FragmentManager
         fragmentTransaction.add(R.id.fragmentContainer, memoListFragment)
+        // 3.Seal the modification
         fragmentTransaction.commit()
     }
 }

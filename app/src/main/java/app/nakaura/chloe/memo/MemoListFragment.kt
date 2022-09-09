@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import app.nakaura.chloe.memo.databinding.ActivityMainBinding
 import app.nakaura.chloe.memo.databinding.FragmentMemoListBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -25,6 +26,7 @@ class MemoListFragment : Fragment() {
     private var param2: String? = null
     private var _binding: FragmentMemoListBinding? = null
     private val binding get() = _binding!!
+    private var memoListAdapter: MemoListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,31 +38,29 @@ class MemoListFragment : Fragment() {
             Memo("Test3"),
             Memo("Test4")
         )
+
         val adapter = MemoListAdapter()
         adapter.updateMemo(memo)
 
         // RecyclerViewとAdapterを連携させる
         binding.recyclerView.adapter = adapter
 
+
         // レイアウトの設定
         // スクロール方向を縦向きで作成（デフォルト）
         //binding.recyclerView.layoutManager = LinearLayoutManager(this)
+
+        arguments?.let {
+            param1 = it.getString(ARG_PARAM1)
+            param2 = it.getString(ARG_PARAM2)
+        }
     }
-
-
-/*
-    arguments?.let {
-        param1 = it.getString(ARG_PARAM1)
-        param2 = it.getString(ARG_PARAM2)
-    }
-    */
-
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentMemoListBinding.inflate(inflater, container, false)
         return binding.root
         // Inflate the layout for this fragment
@@ -89,7 +89,7 @@ class MemoListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val plusButton = view.findViewById<Button>(R.id.plus_button)
+        //val plusButton = view.findViewById<Button>(R.id.plus_button)
         binding.plusButton.setOnClickListener {
             //Log.d("log", "FirstText was pressed!")
             val memoCreateFragment = MemoCreateFragment()
