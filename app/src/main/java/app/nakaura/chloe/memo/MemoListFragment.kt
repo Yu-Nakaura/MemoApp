@@ -1,6 +1,9 @@
 package app.nakaura.chloe.memo
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,10 +32,10 @@ class MemoListFragment : Fragment() {
     private val binding get() = _binding!!
     val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
     private lateinit var memoList: MutableList<String>
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //arguments?.let {
             //param1 = it.getString(ARG_PARAM1)
             //param2 = it.getString(ARG_PARAM2)
         //}
@@ -46,15 +49,24 @@ class MemoListFragment : Fragment() {
     ): View? {
         _binding = FragmentMemoListBinding.inflate(inflater, container, false)
 
-        loadMemo()
-        println(memoList)
+        memoList = mutableListOf<String>(
+            "Test1", "Test2", "Test3", "Test4"
+        )
+
+        updateMemo()
+
+
+        val editor = sharedPref.edit()
+        editor.putStringSet("currentList", memoList.toSet())
+        editor.apply()
+
+        //println(memoList)
         binding.myRecyclerView.layoutManager = layoutManager
 
         val memoListAdapter = MemoListAdapter(memoList)
         binding.myRecyclerView.adapter = memoListAdapter
 
         //memoListAdapter.updateMemo(memoList)
-        println(memoList)
         return binding.root
     }
 
@@ -81,7 +93,8 @@ class MemoListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.plusButton.setOnClickListener {
-            //Log.d("log", "FirstText was pressed!")
+            //Log.d("log", "Plus button was pressed!")
+            Log.d("wordArray", memoList.toString())
             val memoCreateFragment = MemoCreateFragment()
             val fragmentTransaction = fragmentManager?.beginTransaction()
             fragmentTransaction?.addToBackStack(null)
@@ -90,12 +103,12 @@ class MemoListFragment : Fragment() {
         }
     }
 
-    private fun loadMemo() {
-        memoList = mutableListOf<String>(
-            "Test1",
-            "Test2",
-            "Test3",
-            "Test4"
-        )
+    fun updateMemo(){
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(activity)
+        val newestArray: MutableList<String>? = sharedPref.getStringSet("newList", setOf<String>())?.toMutableList()
+        Log.d("newestArray", newestArray.toString())
+        if(newestArray != null){
+            memoList = newestArray
+        }
     }
 }
