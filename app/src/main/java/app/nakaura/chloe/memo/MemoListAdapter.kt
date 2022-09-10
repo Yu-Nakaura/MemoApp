@@ -2,32 +2,31 @@ package app.nakaura.chloe.memo
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import app.nakaura.chloe.memo.databinding.ItemDataCellBinding
 
-// 独自のAdapter
-class MemoListAdapter : RecyclerView.Adapter<ListViewHolder>() {
-    private val memoListData: MutableList<Memo> = mutableListOf()
+class MemoListAdapter(val memoList: MutableList<String>) :
+    RecyclerView.Adapter<MemoListAdapter.ListViewHolder>() {
+
+    class ListViewHolder(val binding: ItemDataCellBinding) : RecyclerView.ViewHolder(binding.root) {
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val binding = ItemDataCellBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemDataCellBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ListViewHolder(binding)
     }
 
-    // ViewHolderの設定
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-
-        val memo = memoListData[position]
-        holder.binding.itemTextView.text = memo.name
-
+        holder.binding.memoWord.text = memoList[position]
     }
 
-    // ViewHolderの数の決定
-    override fun getItemCount(): Int = memoListData.size
+    override fun getItemCount(): Int = memoList.size
 
-    fun updateMemo(newList: List<Memo>) {
-        memoListData.clear()
-        memoListData.addAll(newList)
+    fun updateMemo(newList: List<String>) {
+        memoList.clear()
+        memoList.addAll(newList)
         notifyDataSetChanged()
     }
 }
