@@ -2,6 +2,7 @@ package app.nakaura.chloe.memo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.TextKeyListener.clear
 import androidx.recyclerview.widget.RecyclerView
 import app.nakaura.chloe.memo.databinding.ActivityMainBinding
 import app.nakaura.chloe.memo.databinding.ItemDataCellBinding

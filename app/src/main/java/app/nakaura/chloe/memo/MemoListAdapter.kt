@@ -1,12 +1,13 @@
 package app.nakaura.chloe.memo
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import app.nakaura.chloe.memo.databinding.ItemDataCellBinding
 
-class MemoListAdapter(val memoList: MutableList<String>) :
+class MemoListAdapter(val memoList: ArrayList<String>) :
     RecyclerView.Adapter<MemoListAdapter.ListViewHolder>() {
 
     class ListViewHolder(val binding: ItemDataCellBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -20,14 +21,15 @@ class MemoListAdapter(val memoList: MutableList<String>) :
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         holder.binding.memoWord.text = memoList[position]
+        /*holder.binding.memoWord.setOnClickListener{
+            memoList.removeAt(position)
+            Log.d("listPosition", memoList[position])
+            holder.binding.memoWord.text = memoList[position]
+        }*/
     }
 
     override fun getItemCount(): Int = memoList.size
 
-    fun updateMemo(newList: List<String>) {
-        memoList.clear()
-        memoList.addAll(newList)
-        notifyDataSetChanged()
-    }
 }
+
 
