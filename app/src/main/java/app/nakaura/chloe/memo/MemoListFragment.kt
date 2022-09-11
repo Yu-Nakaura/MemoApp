@@ -11,14 +11,22 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.nakaura.chloe.memo.databinding.FragmentMemoListBinding
-
+import org.json.JSONArray
+import org.json.JSONException
 
 class MemoListFragment : Fragment() {
     private var _binding: FragmentMemoListBinding? = null
     private val binding get() = _binding!!
     private val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
-    private lateinit var memoList: MutableList<String>
     private lateinit var sharedPref: SharedPreferences
+    private val currentArray = JSONArray()
+    private var memoList: ArrayList<String> = arrayListOf(
+        "Test1",
+        "Test2",
+        "Test3",
+        "Test4"
+    )
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,23 +39,16 @@ class MemoListFragment : Fragment() {
     ): View? {
         _binding = FragmentMemoListBinding.inflate(inflater, container, false)
 
-        memoList = mutableListOf<String>(
-            "Test1",
-            "Test2",
-            "Test3",
-            "Test4"
-        )
+        loadMemo()
+        Log.d("FirstCurrentArray", currentArray.toString())
+        Log.d("finalMemoList", memoList.toString())
 
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(activity)
-        //リストを引き出す
-        val previousList: MutableList<String>? =
-            sharedPref.getStringSet("currentList", setOf<String>())?.toMutableList()
-        Log.d("previousArray", previousList.toString())
+        addMemo()
+        Log.d("updatedCurrentArray", currentArray.toString())
+        Log.d("finalMemoList", memoList.toString())
 
-        if (previousList != null) {
-            memoList = previousList
-        }
-        updateMemo()
+        saveMemo()
+        Log.d("finalMemoList", memoList.toString())
 
         binding.myRecyclerView.layoutManager = layoutManager
         val memoListAdapter = MemoListAdapter(memoList as ArrayList<String>)
@@ -63,7 +64,7 @@ class MemoListFragment : Fragment() {
 
         binding.plusButton.setOnClickListener {
             //Log.d("log", "Plus button was pressed!")
-            Log.d("wordArray2", memoList.toString())
+            //Log.d("wordArray2", memoList.toString())
             val memoCreateFragment = MemoCreateFragment()
             val fragmentTransaction = fragmentManager?.beginTransaction()
             fragmentTransaction?.addToBackStack(null)
@@ -72,7 +73,46 @@ class MemoListFragment : Fragment() {
         }
     }
 
-    private fun updateMemo() {
+    private fun loadMemo() {
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(activity)
+        val previousListString: String? = sharedPref.getString("currentList", "")
+        if (previousListString != null) {
+            //リストをStringで引き出す
+            //val previousList: MutableList<String>? =
+            //sharedPref.getStringSet("currentList", setOf<String>())?.toMutableList()
+            //sharedPref = PreferenceManager.getDefaultSharedPreferences(activity)
+            //val previousListString: String? = sharedPref.getString("currentList", "")
+            Log.d("previousListString", previousListString.toString())
+            //currentArray.put(memoList) //
+            //新しいリストをつくる
+            val previousList = ArrayList<String>()
+            try {
+                val currentArray = JSONArray(previousListString)
+                //ワードごとに分ける
+                for (i in 0 until currentArray.length()) {
+                    val word: String = currentArray.optString(i)
+                    Log.d("word", word)
+                    //新しいリストにいれていく
+                    previousList.add(word)
+                    Log.d("previousList", previousList.toString())
+                }
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+
+            Log.d("previousArray", previousList.toString())
+            memoList.clear()
+            memoList.addAll(previousList)
+            Log.d("memoList", memoList.toString())
+            currentArray == memoList
+        }
+        for (i in 0 until memoList.size) {
+            currentArray.put(memoList[i])
+            Log.d("currentArray55", currentArray.toString())
+        }
+    }
+
+    private fun addMemo() {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(activity)
 
         //新しいメモを受け取る
@@ -80,10 +120,25 @@ class MemoListFragment : Fragment() {
         //リストに追加する
         if (addedWord != null) {
             memoList.add(addedWord)
+            currentArray.put(addedWord)//
+            Log.d("currentArray(addMemo)", currentArray.toString())
+        } else {
+            currentArray.put(null)
         }
+
+    }
+
+    private fun saveMemo() {
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(activity)
         //リストを保存する
         val editor = sharedPref.edit()
-        editor.putStringSet("currentList", memoList.toSet())
+        //editor.putStringSet("currentList", memoList.toSet())
+        editor.putString("currentList", currentArray.toString())//
         editor.apply()
+        Log.d("currentArray(saveMemo)", currentArray.toString())
     }
+
+
 }
+
+
