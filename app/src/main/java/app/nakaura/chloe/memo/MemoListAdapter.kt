@@ -1,17 +1,14 @@
 package app.nakaura.chloe.memo
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import app.nakaura.chloe.memo.databinding.ItemDataCellBinding
 
-class MemoListAdapter(val memoList: ArrayList<String>) :
+class MemoListAdapter(private val memoList: ArrayList<String>) :
     RecyclerView.Adapter<MemoListAdapter.ListViewHolder>() {
 
-    class ListViewHolder(val binding: ItemDataCellBinding) : RecyclerView.ViewHolder(binding.root) {
-    }
+    class ListViewHolder(val binding: ItemDataCellBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val binding =

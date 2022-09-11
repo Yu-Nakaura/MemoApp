@@ -1,11 +1,8 @@
 package app.nakaura.chloe.memo
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.method.TextKeyListener.clear
-import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
 import app.nakaura.chloe.memo.databinding.ActivityMainBinding
-import app.nakaura.chloe.memo.databinding.ItemDataCellBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
