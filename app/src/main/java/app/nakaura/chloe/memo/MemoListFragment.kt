@@ -45,6 +45,7 @@ class MemoListFragment : Fragment() {
         //Log.d("FirstCurrentArray", currentArray.toString())
         //Log.d("finalMemoList", memoList.toString())
 
+
         addMemo()
         //Log.d("updatedCurrentArray", currentArray.toString())
         //Log.d("finalMemoList", memoList.toString())
@@ -108,8 +109,10 @@ class MemoListFragment : Fragment() {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(activity)
         //新しいメモをMemoCreateFragmentから受け取る
         val addedWord: String? = sharedPref.getString("newWord", "")
+        var finalWord:String = memoList[memoList.size - 1]
+
         //リストに追加する
-        if (addedWord != null) {
+        if (addedWord != null && finalWord != addedWord) {
             if (addedWord.isNotEmpty()) {
                 memoList.add(addedWord)
                 currentArray.put(addedWord)
