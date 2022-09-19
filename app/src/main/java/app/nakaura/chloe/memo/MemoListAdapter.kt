@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import app.nakaura.chloe.memo.databinding.ItemDataCellBinding
 
+//reviewed by toppo 🧸: RecyclerViewが使えていてGood！！
 class MemoListAdapter(private val memoList: ArrayList<String>) :
     RecyclerView.Adapter<MemoListAdapter.ListViewHolder>() {
 
@@ -18,6 +19,7 @@ class MemoListAdapter(private val memoList: ArrayList<String>) :
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         holder.binding.memoWord.text = memoList[position]
+        //🧸:必要ないコードは消しちゃおう〜
         /*holder.binding.memoWord.setOnClickListener{
             memoList.removeAt(position)
             Log.d("listPosition", memoList[position])
