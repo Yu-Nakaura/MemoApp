@@ -14,6 +14,7 @@ import app.nakaura.chloe.memo.databinding.FragmentMemoListBinding
 import org.json.JSONArray
 import org.json.JSONException
 
+//reviewed by toppo 🧸: レイアウトや画面遷移は良さそう！けどアプリが落ちちゃう状態っぽいので、あと1歩修正が必要><
 class MemoListFragment : Fragment() {
     private var _binding: FragmentMemoListBinding? = null
     private val binding get() = _binding!!
@@ -27,6 +28,7 @@ class MemoListFragment : Fragment() {
         "Test4"
     )
 
+    //🧸: 要らないライフサイクルは削除しよう！
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -39,6 +41,7 @@ class MemoListFragment : Fragment() {
         _binding = FragmentMemoListBinding.inflate(inflater, container, false)
 
         loadMemo()
+        //🧸: 必要ないコードは消しちゃおう！
         /*for (i in 0 until memoList.size) {
             currentArray.put(memoList[i])
         }*/
@@ -46,6 +49,7 @@ class MemoListFragment : Fragment() {
         //Log.d("finalMemoList", memoList.toString())
 
 
+        //🧸: エラーログを見るとここが原因でアプリが落ちてしまっていそう！addMemoのメソッドを再確認してみよう
         addMemo()
         //Log.d("updatedCurrentArray", currentArray.toString())
         //Log.d("finalMemoList", memoList.toString())
@@ -74,6 +78,7 @@ class MemoListFragment : Fragment() {
         }
     }
 
+    //🧸: メソッド化が出来ていてNice！
     private fun loadMemo() {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(activity)
         //リストをStringで引き出す
@@ -105,10 +110,12 @@ class MemoListFragment : Fragment() {
         }
     }
 
+    //🧸: 1番最初のSharedPreferencesが空の状態の時にアプリが落ちてしまっている…！
     private fun addMemo() {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(activity)
         //新しいメモをMemoCreateFragmentから受け取る
         val addedWord: String? = sharedPref.getString("newWord", "")
+        //🧸: 更新しない変数はvalで定義しよう
         var finalWord:String = memoList[memoList.size - 1]
 
         //リストに追加する
