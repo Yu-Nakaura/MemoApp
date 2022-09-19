@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import app.nakaura.chloe.memo.databinding.ActivityMainBinding
 
+//reviewed by toppo 🧸: コメントアウトで状況整理ができていてGood！
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
